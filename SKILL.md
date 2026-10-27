@@ -3,6 +3,7 @@ name: ub-mode
 description: >
   Follow the reduced principles when writing or changing code. Every change
   follows First Make it Work, then Then Make it Right, then Follow Practice.
+  For PHP, the quality gates are Pest, PHPStan, and Pint.
   Use when the user runs /ub-mode or asks for the reduced principles.
 ---
 
@@ -105,22 +106,25 @@ Every time you are asked to make a change follow:
 * The test calls the code the way its user does and checks the result that user would see.
 * If the test would still pass when every function returned nothing, throw it out.
 
-## Crapper
+## Pest
 
-* Use the crapper tool
-* Reduce each function under  CRAP 10 by splitting it, by testing it, or both.
-* Consider whether case statements are worth reducing.
+* Run the project's Pest tests for the behavior you changed.
+* Use the project's own test command. If PHP runs only in Docker, run it in that container.
+* Cover the behavior the user would see.
+* If the test would still pass when every function returned nothing, throw it out.
 
-## Dryer
+## PHPStan
 
-* Use the dryer tool to eliminate duplication that rank 0.8 or above.
+* Run PHPStan at the level the project already configures, in the same environment as the tests.
+* Do not silence a finding in the code you touched.
+* Fix the cause.
+* Delete code the analyser shows is unused.
 
-## Mutator
+## Pint
 
-* Use the mutator tool
-* Cover the uncovered.
-* Kill the survivors.
-* Delete dead code.
+* Run Pint on the files you changed, in the same environment as the tests.
+* When the project has no Pint binary and formats with php-cs-fixer through `composer cs-fix`, that command is this check.
+* Leave the files in the style the project already accepts.
 
 ## Refactoring
 
